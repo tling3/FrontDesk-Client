@@ -1,37 +1,20 @@
 import React from 'react';
-import { BrowserRouter, Route, Link } from 'react-router-dom';
+import { Router, Route, Link } from 'react-router-dom';
+import history from '../History';
 import Header from '../Shared/Header';
-
-const PageOne = () => {
-    return (
-        <div>
-            Page One
-            <br />
-            <Link to="/pagetwo">To Page Two</Link>
-        </div>
-    );
-}
-
-const PageTwo = () => {
-    return (
-        <div>
-            Page Two
-            <br />
-            <Link to="/">To Page One</Link>
-        </div>
-    );
-}
+import SessionList from './Pages/SessionList/SessionList';
+import SessionShow from './Pages/SessionShow/SessionShow';
 
 const App = () => {
     return (
         <div className="ui container">
-            <BrowserRouter>
+            <Router history={history}>
                 <div>
                     <Header />
-                    <Route path="/" exact component={PageOne}></Route>
-                    <Route path="/pagetwo" component={PageTwo}></Route>
+                    <Route path="/" exact component={SessionList}></Route>
+                    <Route path="/session/view/:id" exact component={SessionShow}></Route>
                 </div>
-            </BrowserRouter>
+            </Router>
         </div>
     );
 }
