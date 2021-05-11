@@ -14,7 +14,6 @@ class SessionList extends React.Component {
     }
 
     renderSessionList() {
-        console.log(this.props.sessions);
         return this.props.sessions.map(session => {
             return (
                 <div className="ui one column grid" key={session.id}>
