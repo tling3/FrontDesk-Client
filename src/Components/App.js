@@ -3,7 +3,7 @@ import { Router, Route } from 'react-router-dom';
 import history from '../History';
 import Header from '../Shared/Header';
 import SessionList from './Pages/SessionList/SessionList';
-import SessionShow from './Pages/SessionShow/SessionShow';
+import SessionMembers from './Pages/SessionMembers/SessionMembers';
 
 const App = () => {
     return (
@@ -12,7 +12,7 @@ const App = () => {
                 <div>
                     <Header />
                     <Route path="/" exact component={SessionList}></Route>
-                    <Route path="/session/view/:id" exact component={SessionShow}></Route>
+                    <Route path="/session/members/:id" exact component={SessionMembers}></Route>
                 </div>
             </Router>
         </div>
