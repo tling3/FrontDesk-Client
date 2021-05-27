@@ -41,7 +41,7 @@ class SessionList extends React.Component {
 }
 
 const mapStateToProps = state => {
-    return {sessions: Object.values(state.sessions)};
+    return { sessions: Object.values(state.sessions) };
 }
 
 export default connect(mapStateToProps, { getSessions })(SessionList);

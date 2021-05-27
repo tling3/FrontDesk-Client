@@ -37,7 +37,7 @@ class SessionMembers extends React.Component {
                 <br />
                 <br />
                 <br />
-                <Link to="/" className="large ui basic labeled icon button">
+                <Link to={`/session/member/search/${this.props.match.params.id}`} className="large ui basic labeled icon button">
                     <i className="user plus icon"></i>
                     Add Member
                 </Link>
@@ -45,45 +45,45 @@ class SessionMembers extends React.Component {
                 <br />
                 <br />
                 <div className="ui segment">
-                <div className="ui top attached label">Enrolled Members</div>
-                        <div className="ui relaxed divided list">
-                            <div className="item">
-                                <i className="large github middle aligned icon" />
-                                <div className="content">
-                                    <div className="header">Header</div>
-                                    <div className="description">This is a longer description.</div>
-                                </div>
+                    <div className="ui top attached label">Enrolled Members</div>
+                    <div className="ui relaxed divided list">
+                        <div className="item">
+                            <i className="large github middle aligned icon" />
+                            <div className="content">
+                                <div className="header">Header</div>
+                                <div className="description">This is a longer description.</div>
                             </div>
-                            <div className="item">
-                                <i className="large github middle aligned icon" />
-                                <div className="content">
-                                    <div className="header">Header</div>
-                                    <div className="description">This is a longer description.</div>
-                                </div>
+                        </div>
+                        <div className="item">
+                            <i className="large github middle aligned icon" />
+                            <div className="content">
+                                <div className="header">Header</div>
+                                <div className="description">This is a longer description.</div>
                             </div>
-                            <div className="item">
-                                <i className="large github middle aligned icon" />
-                                <div className="content">
-                                    <div className="header">Header</div>
-                                    <div className="description">This is a longer description.</div>
-                                </div>
+                        </div>
+                        <div className="item">
+                            <i className="large github middle aligned icon" />
+                            <div className="content">
+                                <div className="header">Header</div>
+                                <div className="description">This is a longer description.</div>
                             </div>
-                            <div className="item">
-                                <i className="large github middle aligned icon" />
-                                <div className="content">
-                                    <div className="header">Header</div>
-                                    <div className="description">This is a longer description.</div>
-                                </div>
+                        </div>
+                        <div className="item">
+                            <i className="large github middle aligned icon" />
+                            <div className="content">
+                                <div className="header">Header</div>
+                                <div className="description">This is a longer description.</div>
                             </div>
-                            <div className="item">
-                                <i className="large github middle aligned icon" />
-                                <div className="content">
-                                    <div className="header">Header</div>
-                                    <div className="description">This is a longer description.</div>
-                                </div>
+                        </div>
+                        <div className="item">
+                            <i className="large github middle aligned icon" />
+                            <div className="content">
+                                <div className="header">Header</div>
+                                <div className="description">This is a longer description.</div>
                             </div>
                         </div>
                     </div>
+                </div>
             </div>
         );
     }

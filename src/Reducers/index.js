@@ -1,6 +1,10 @@
 import { combineReducers } from 'redux';
 import SessionsReducer from './SessionsReducer'
+import MemberSearchReducer from './MemberSearchReducer';
+import SearchTextReducer from './SearchTextReducer';
 
 export default combineReducers({
-    sessions: SessionsReducer
+    sessions: SessionsReducer,
+    members: MemberSearchReducer,
+    searchText: SearchTextReducer
 });
