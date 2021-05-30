@@ -6,7 +6,11 @@ import { getMembers, getSearchText } from '../../../Actions';
 
 class MemberSearch extends React.Component {
 
-    state = { fullNamesList: [] };
+    state = {
+        searchText: "",
+        fullNamesList: [],
+        searchResults: []
+    };
 
     componentDidMount() {
         this.props.getMembers();
@@ -18,43 +22,54 @@ class MemberSearch extends React.Component {
         }
     }
 
-    onInputChange(event) {
-        // you may want to convert this to component level state
-        this.props.getSearchText(event.target.value);
-        // var filteredNames = this.state.fullNamesList.filter(member => member.includes(event.target.value.toLowerCase()));
-        // console.log("filteredNames", filteredNames);
-
-        var objArray = this.props.members[0];
-        console.log("objArray", objArray);
-        var objArrayEntries = []
-        for (let j = 0; j < objArray.length; j++) {
-            objArrayEntries.push(Object.entries(objArray[j]))
-        }
-        console.log("objArrayEntries", objArrayEntries);
-
-        var results = []
-        var KVpairsArry1 = objArrayEntries[0]
-        console.log("KVpairsArry1", KVpairsArry1);
-
-
-        results = KVpairsArry1.filter(([key, value]) => String(value).toLowerCase().includes(event.target.value.toLowerCase()));
-        console.log("results", results);
+    componentWillUnmount() {
+        // this.props.getSearchText("");
+        this.setState({ searchText: "" })
     }
 
     createFullNameListState() {
-        console.log("members state: ", this.props.members);
-        var fullNamesList = this.props.members.map(member => (member.firstName + " " + member.lastName).toLowerCase());
+        var fullNamesList = this.props.members.map(member => ([member.id, (member.firstName + " " + member.lastName)]));
         this.setState({ fullNamesList });
+    }
 
+    onInputChange(event) {
+        var searchResults = this.state.fullNamesList.filter(([key, value]) => String(value).toLowerCase().includes(event.target.value.toLowerCase()));
+        // you may want to convert this to component level state
+        // this.props.getSearchText(event.target.value);
+        this.setState({ searchText: event.target.value });
+        this.setState({ searchResults });
+        console.log("searchText", event.target.value);
+        console.log("searchResults", searchResults);
+    }
 
-        var objArray = this.props.members[0];
-        console.log("objArray", objArray);
-        var objArrayEntries = []
-        for (let j = 0; j < objArray.length; j++) {
-            objArrayEntries.push(Object.entries(objArray[j]))
+    renderMemberList = () => {
+        return (
+            <div className="ui segment">
+                <div className="ui top attached label">Members</div>
+                <div className="ui relaxed divided list">
+                    {this.mapMembers()}
+                </div>
+            </div>
+        );
+    }
+
+    mapMembers = () => {
+        // change search text to state
+        // if (this.props.searchText != "" & this.state.searchResults.length > 0) {
+        if (this.state.searchText != "" & this.state.searchResults.length > 0) {
+            return this.state.searchResults.map(member => {
+                console.log("member", member);
+                var name = member[1];
+                return (
+                    <div className="item">
+                        <i className="large github middle aligned icon"></i>
+                        <div className="content">
+                            <div className="header">{name}</div>
+                        </div>
+                    </div>
+                );
+            })
         }
-        console.log("objArrayEntries", objArrayEntries);
-        // var results = objArrayEntries.filter(([key, value]) => value.includes(event.target.value.toLowerCase()));
     }
 
     onSubmit(event) {
@@ -70,18 +85,20 @@ class MemberSearch extends React.Component {
                             <div className="field">
                                 <label>Member Search</label>
                                 <div className="ui icon input">
-                                    <input type="text" placeholder="Search..." value={this.props.searchText} onChange={event => this.onInputChange(event)}></input>
+                                    <input type="text" placeholder="Search..." value={this.state.searchText} onChange={event => this.onInputChange(event)}></input>
                                     <i className="circular search icon" />
                                 </div>
                             </div>
                         </div>
                     </div>
                 </form>
+                {this.renderMemberList()}
             </div>
         );
     }
 
     render() {
+        console.log("search text in render", this.props.searchText);
         return (
             this.renderSearchInput()
         );
@@ -89,10 +106,12 @@ class MemberSearch extends React.Component {
 }
 
 const mapStateToProps = state => {
+    console.log("map state fired");
     return {
-        members: Object.values(state.members),
-        searchText: state.searchText
+        members: Object.values(state.members)
+        // searchText: state.searchText
     };
 }
 
-export default connect(mapStateToProps, { getMembers, getSearchText })(MemberSearch);
+// export default connect(mapStateToProps, { getMembers, getSearchText })(MemberSearch);
+export default connect(mapStateToProps, { getMembers })(MemberSearch);

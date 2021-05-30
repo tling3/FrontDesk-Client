@@ -2,8 +2,8 @@ import FrontDesk from '../Apis/FrontDesk';
 import {
     GET_SESSIONS,
     GET_SESSION,
-    GET_MEMBERS,
-    SEARCH_TEXT
+    GET_MEMBERS
+    // SEARCH_TEXT
 } from './Types';
 
 export const getSessions = () => async dispatch => {
@@ -24,6 +24,6 @@ export const getMembers = () => async dispatch => {
     dispatch({ type: GET_MEMBERS, payload: response.data });
 }
 
-export const getSearchText = text => dispatch => {
-    dispatch({ type: SEARCH_TEXT, payload: text });
-}
+// export const getSearchText = text => dispatch => {
+//     dispatch({ type: SEARCH_TEXT, payload: text });
+// }
