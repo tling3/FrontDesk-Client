@@ -1,9 +1,9 @@
 import React from 'react';
-import _ from 'lodash';
-import Modal from '../../../Shared/Modal';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import _ from 'lodash';
 import { getMembers } from '../../../Actions';
+import Modal from '../../../Shared/Modal';
 
 class MemberSearch extends React.Component {
 
@@ -27,7 +27,7 @@ class MemberSearch extends React.Component {
     }
 
     componentWillUnmount() {
-        this.setState({ searchText: "" })
+        this.setState({ searchText: "" });
     }
 
     createFullNameListState() {
@@ -42,11 +42,11 @@ class MemberSearch extends React.Component {
 
     testMethod(memberId) {
         console.log("onClick memberId", memberId);
-        console.log("class id match params", this.props.match.params.id)
+        console.log("class id match params", this.props.match.params.id);
     }
 
     mapMembers = () => {
-        if (this.state.searchText != "" && this.state.searchResults.length > 0) {
+        if (this.state.searchText !== "" && this.state.searchResults.length > 0) {
             return this.state.searchResults.map(member => {
                 var name = member[1];
                 var memberId = member[0]
@@ -61,7 +61,7 @@ class MemberSearch extends React.Component {
                         </div>
                     </div>
                 );
-            })
+            });
         }
     }
 
@@ -98,7 +98,6 @@ class MemberSearch extends React.Component {
     }
 
     render() {
-        console.log("props", this.props);
         return this.renderSearchInput();
     }
 }
