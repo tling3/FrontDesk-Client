@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { getSessions } from '../../../Actions';
 import { convertDateTime } from '../../../Shared/Methods';
+import { getSessions } from '../../../Actions';
 
 class SessionList extends React.Component {
     componentDidMount() {
@@ -41,7 +41,7 @@ class SessionList extends React.Component {
 }
 
 const mapStateToProps = state => {
-    return {sessions: Object.values(state.sessions)};
+    return { sessions: Object.values(state.sessions) };
 }
 
 export default connect(mapStateToProps, { getSessions })(SessionList);

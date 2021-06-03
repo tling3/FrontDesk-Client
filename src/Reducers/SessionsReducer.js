@@ -1,5 +1,9 @@
 import _ from 'lodash';
-import { GET_SESSIONS, GET_SESSION } from '../Actions/Types'
+import {
+    GET_SESSIONS,
+    GET_SESSION
+} from '../Actions/Types';
+
 const SessionsReducer = (state = [], action) => {
     switch (action.type) {
         case GET_SESSIONS:
