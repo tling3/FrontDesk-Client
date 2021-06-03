@@ -2,7 +2,8 @@ import React from 'react';
 import _ from 'lodash';
 import Modal from '../../../Shared/Modal';
 import { connect } from 'react-redux';
-import { getMembers, getSearchText } from '../../../Actions';
+import { Link } from 'react-router-dom';
+import { getMembers } from '../../../Actions';
 
 class MemberSearch extends React.Component {
 
@@ -12,18 +13,20 @@ class MemberSearch extends React.Component {
         searchResults: []
     };
 
+    onSubmit(event) {
+        event.preventDefault();
+    }
+
     componentDidMount() {
         this.props.getMembers();
     }
 
     componentDidUpdate() {
-        if (this.state.fullNamesList.length === 0) {
+        if (this.state.fullNamesList.length === 0)
             this.createFullNameListState();
-        }
     }
 
     componentWillUnmount() {
-        // this.props.getSearchText("");
         this.setState({ searchText: "" })
     }
 
@@ -34,12 +37,32 @@ class MemberSearch extends React.Component {
 
     onInputChange(event) {
         var searchResults = this.state.fullNamesList.filter(([key, value]) => String(value).toLowerCase().includes(event.target.value.toLowerCase()));
-        // you may want to convert this to component level state
-        // this.props.getSearchText(event.target.value);
-        this.setState({ searchText: event.target.value });
-        this.setState({ searchResults });
-        console.log("searchText", event.target.value);
-        console.log("searchResults", searchResults);
+        this.setState({ searchResults, searchText: event.target.value });
+    }
+
+    testMethod(memberId) {
+        console.log("onClick memberId", memberId);
+        console.log("class id match params", this.props.match.params.id)
+    }
+
+    mapMembers = () => {
+        if (this.state.searchText != "" && this.state.searchResults.length > 0) {
+            return this.state.searchResults.map(member => {
+                var name = member[1];
+                var memberId = member[0]
+                return (
+                    <div className="item" key={memberId}>
+                        <i className="large github middle aligned icon"></i>
+                        <div className="content">
+                            <Link to={`/session/members/${this.props.match.params.id}`} onClick={() => this.testMethod(memberId)}>
+                                <div className="header">{name}</div>
+                                <div className="description">some text</div>
+                            </Link>
+                        </div>
+                    </div>
+                );
+            })
+        }
     }
 
     renderMemberList = () => {
@@ -51,29 +74,6 @@ class MemberSearch extends React.Component {
                 </div>
             </div>
         );
-    }
-
-    mapMembers = () => {
-        // change search text to state
-        // if (this.props.searchText != "" & this.state.searchResults.length > 0) {
-        if (this.state.searchText != "" & this.state.searchResults.length > 0) {
-            return this.state.searchResults.map(member => {
-                console.log("member", member);
-                var name = member[1];
-                return (
-                    <div className="item">
-                        <i className="large github middle aligned icon"></i>
-                        <div className="content">
-                            <div className="header">{name}</div>
-                        </div>
-                    </div>
-                );
-            })
-        }
-    }
-
-    onSubmit(event) {
-        event.preventDefault();
     }
 
     renderSearchInput() {
@@ -98,20 +98,13 @@ class MemberSearch extends React.Component {
     }
 
     render() {
-        console.log("search text in render", this.props.searchText);
-        return (
-            this.renderSearchInput()
-        );
+        console.log("props", this.props);
+        return this.renderSearchInput();
     }
 }
 
 const mapStateToProps = state => {
-    console.log("map state fired");
-    return {
-        members: Object.values(state.members)
-        // searchText: state.searchText
-    };
+    return { members: Object.values(state.members) };
 }
 
-// export default connect(mapStateToProps, { getMembers, getSearchText })(MemberSearch);
 export default connect(mapStateToProps, { getMembers })(MemberSearch);
