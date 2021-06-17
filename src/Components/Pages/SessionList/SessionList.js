@@ -6,7 +6,6 @@ import { getSessions } from '../../../Actions';
 
 class SessionList extends React.Component {
     componentDidMount() {
-        console.log("mount fired");
         this.props.getSessions();
     }
 
@@ -32,7 +31,6 @@ class SessionList extends React.Component {
     }
 
     render() {
-        console.log("render fired");
         return (
             <div>
                 <h2>Classes</h2>
@@ -43,7 +41,6 @@ class SessionList extends React.Component {
 }
 
 const mapStateToProps = state => {
-    console.log("mapstatetoprops fired");
     return { sessions: Object.values(state.sessions) };
 }
 

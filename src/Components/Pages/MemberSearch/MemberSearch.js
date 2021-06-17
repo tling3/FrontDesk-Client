@@ -6,52 +6,26 @@ import { getMembers } from '../../../Actions';
 import Modal from '../../../Shared/Modal';
 
 class MemberSearch extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            searchText: "",
-            fullNamesList: [],
-            searchResults: []
-        };
-
-        // console.log("constructor state: ", this.state);
-    }
+    state = {
+        searchText: "",
+        fullNamesList: [],
+        searchResults: []
+    };
 
     onSubmit(event) {
-        console.log("onSubmit fired");
         event.preventDefault();
     }
 
     componentDidMount() {
-        console.log("componentDidMount fired");
         this.props.getMembers();
     }
 
-    // componentDidUpdate() {
-    //     console.log("update");
-    //     console.log("this.state.fullNamesList.length", this.state.fullNamesList.length);
-    //     if (this.state.fullNamesList.length === 0) {
-    //         // console.log("did update fired");
-    //         this.createFullNameListState();
-    //     }
-    // }
-
-    createFullNameListState = () => {
-        // console.log("createFullNameListState fired");
-        var fullNamesList = this.props.members.map(member => ([member.id, (member.firstName + " " + member.lastName)]));
-        // this.setState({ fullNamesList });
-        // console.log("after settting fullnames: ", this.state.fullNamesList);
-    }
-
     componentWillUnmount() {
-        console.log("componentWillUnmount fired");
         this.setState({ searchText: "" });
     }
 
     onInputChange(event) {
-        // console.log("onInputChange fired");
-        var searchResults = this.state.fullNamesList.filter(([key, value]) => String(value).toLowerCase().includes(event.target.value.toLowerCase()));
+        var searchResults = this.props.members.filter(([key, value]) => String(value).toLowerCase().includes(event.target.value.toLowerCase()));
         this.setState({ searchResults, searchText: event.target.value });
     }
 
@@ -62,7 +36,6 @@ class MemberSearch extends React.Component {
     }
 
     mapMembers = () => {
-        console.log('mapMembers fired');
         if (this.state.searchText !== "" && this.state.searchResults.length > 0) {
             return this.state.searchResults.map(member => {
                 var name = member[1];
@@ -83,7 +56,6 @@ class MemberSearch extends React.Component {
     }
 
     renderMemberList = () => {
-        console.log('renderMemberList fired');
         return (
             <div className="ui segment">
                 <div className="ui top attached label">Members</div>
@@ -95,7 +67,6 @@ class MemberSearch extends React.Component {
     }
 
     renderSearchInput() {
-        console.log('renderSearchInput fired');
         return (
             <div>
                 <form className="ui form" onSubmit={this.onSubmit}>
@@ -117,16 +88,16 @@ class MemberSearch extends React.Component {
     }
 
     render() {
-        console.log('render fired');
-        // console.log("state at render: ", this.state);
-        // console.log("props at render: ", this.props);
         return this.renderSearchInput();
     }
 }
 
+const createFullNames = (members) => {
+    return members.map(member => ([member.id, (member.firstName + " " + member.lastName)]));
+}
+
 const mapStateToProps = state => {
-    console.log("mapStateToProps fired");
-    return { members: Object.values(state.members) };
+    return { members: createFullNames(Object.values(state.members)) };
 }
 
 export default connect(mapStateToProps, { getMembers })(MemberSearch);
