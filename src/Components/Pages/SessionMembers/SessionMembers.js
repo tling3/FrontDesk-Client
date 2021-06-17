@@ -2,11 +2,45 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { convertDateTime } from '../../../Shared/Methods';
-import { getSession } from '../../../Actions';
+import { getSession, getAttendance, purgeAttendance } from '../../../Actions';
 
 class SessionMembers extends React.Component {
     componentDidMount() {
         this.props.getSession(this.props.match.params.id);
+        this.props.getAttendance(this.props.match.params.id, "2021-06-06");
+        // this.props.getAttendance(this.props.match.params.id, new Date().toISOString().slice(0, 10));
+        // this.props.getAttendance(14, "2021-06-06");
+    }
+
+    componentWillUnmount() {
+        this.props.purgeAttendance();
+    }
+
+    renderMemberList() {
+        return (
+            <div className="ui segment">
+                <div className="ui top attached label">Enrolled Members</div>
+                <div className="ui relaxed divided list">
+                    {this.mapMembers()}
+                </div>
+            </div>
+        );
+    }
+
+    mapMembers() {
+        return (
+            this.props.attendance.map(member => {
+                return (
+                    <div className="item" key={member.id}>
+                        <i className="large github middle aligned icon" />
+                        <div className="content">
+                            <div className="header">{member.firstName} {member.lastName}</div>
+                            <div className="description">This is a longer description.</div>
+                        </div>
+                    </div>
+                );
+            })
+        );
     }
 
     render() {
@@ -28,32 +62,17 @@ class SessionMembers extends React.Component {
                     <i className="user plus icon"></i>
                     Add Member
                 </Link>
-                <div className="ui segment">
-                    <div className="ui top attached label">Enrolled Members</div>
-                    <div className="ui relaxed divided list">
-                        <div className="item">
-                            <i className="large github middle aligned icon" />
-                            <div className="content">
-                                <div className="header">Header</div>
-                                <div className="description">This is a longer description.</div>
-                            </div>
-                        </div>
-                        <div className="item">
-                            <i className="large github middle aligned icon" />
-                            <div className="content">
-                                <div className="header">Header</div>
-                                <div className="description">This is a longer description.</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                {this.renderMemberList()}
             </div>
         );
     }
 }
 
 const mapStateToProps = (state, ownProps) => {
-    return { session: state.sessions[ownProps.match.params.id] };
+    return {
+        session: state.sessions[ownProps.match.params.id],
+        attendance: Object.values(state.attendance)
+    };
 }
 
-export default connect(mapStateToProps, { getSession })(SessionMembers);
+export default connect(mapStateToProps, { getSession, getAttendance, purgeAttendance })(SessionMembers);
