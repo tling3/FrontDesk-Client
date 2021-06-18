@@ -1,7 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import _ from 'lodash';
 import { getMembers, insertAttendance } from '../../../Actions';
 import Modal from '../../../Shared/Modal';
 
@@ -42,12 +40,10 @@ class MemberSearch extends React.Component {
                     <div className="item" key={memberId}>
                         <i className="large github middle aligned icon"></i>
                         <div className="content">
-                            {/* <Link to={`/session/members/${this.props.match.params.id}`} onClick={() => this.insertMember(memberId)}> */}
                             <a onClick={() => this.insertMember(memberId)}>
                                 <div className="header">{name}</div>
                                 <div className="description">some text</div>
                             </a>
-                            {/* </Link> */}
                         </div>
                     </div>
                 );
