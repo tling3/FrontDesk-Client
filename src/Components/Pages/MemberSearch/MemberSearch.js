@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import _ from 'lodash';
-import { getMembers } from '../../../Actions';
+import { getMembers, insertAttendance } from '../../../Actions';
 import Modal from '../../../Shared/Modal';
 
 class MemberSearch extends React.Component {
@@ -29,10 +29,8 @@ class MemberSearch extends React.Component {
         this.setState({ searchResults, searchText: event.target.value });
     }
 
-    testMethod(memberId) {
-        console.log("testMethod fired");
-        console.log("onClick memberId", memberId);
-        console.log("class id match params", this.props.match.params.id);
+    insertMember(memberId) {
+        this.props.insertAttendance(memberId, this.props.match.params.id);
     }
 
     mapMembers = () => {
@@ -44,10 +42,12 @@ class MemberSearch extends React.Component {
                     <div className="item" key={memberId}>
                         <i className="large github middle aligned icon"></i>
                         <div className="content">
-                            <Link to={`/session/members/${this.props.match.params.id}`} onClick={() => this.testMethod(memberId)}>
+                            {/* <Link to={`/session/members/${this.props.match.params.id}`} onClick={() => this.insertMember(memberId)}> */}
+                            <a onClick={() => this.insertMember(memberId)}>
                                 <div className="header">{name}</div>
                                 <div className="description">some text</div>
-                            </Link>
+                            </a>
+                            {/* </Link> */}
                         </div>
                     </div>
                 );
@@ -100,4 +100,4 @@ const mapStateToProps = state => {
     return { members: createFullNames(Object.values(state.members)) };
 }
 
-export default connect(mapStateToProps, { getMembers })(MemberSearch);
+export default connect(mapStateToProps, { getMembers, insertAttendance })(MemberSearch);
