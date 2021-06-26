@@ -1,19 +1,38 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { convertDateTime } from '../../../Shared/Methods';
-import { getSession, getAttendance, purgeAttendance } from '../../../Actions';
+import { convertDateTime, getTodayDate } from '../../../Shared/Utility';
+import { getSession, getAttendanceDto, purgeAttendanceDto } from '../../../Actions';
 
 class SessionMembers extends React.Component {
     componentDidMount() {
         this.props.getSession(this.props.match.params.id);
-        this.props.getAttendance(this.props.match.params.id, "2021-06-06");
-        // this.props.getAttendance(this.props.match.params.id, new Date().toISOString().slice(0, 10));
-        // this.props.getAttendance(14, "2021-06-06");
+        this.props.getAttendanceDto(this.props.match.params.id, getTodayDate());
     }
 
     componentWillUnmount() {
-        this.props.purgeAttendance();
+        this.props.purgeAttendanceDto();
+    }
+
+    mapMembers() {
+        if (!this.props.attendanceDto.length > 0) {
+            return <div>No currently enrolled members.</div>
+        }
+        else {
+            return (
+                this.props.attendanceDto.map(member => {
+                    return (
+                        <div className="item" key={member.id}>
+                            <i className="large github middle aligned icon" />
+                            <div className="content">
+                                <div className="header">{member.firstName} {member.lastName}</div>
+                                <div className="description"></div>
+                            </div>
+                        </div>
+                    );
+                })
+            );
+        }
     }
 
     renderMemberList() {
@@ -27,25 +46,8 @@ class SessionMembers extends React.Component {
         );
     }
 
-    mapMembers() {
-        return (
-            this.props.attendance.map(member => {
-                return (
-                    <div className="item" key={member.id}>
-                        <i className="large github middle aligned icon" />
-                        <div className="content">
-                            <div className="header">{member.firstName} {member.lastName}</div>
-                            <div className="description">This is a longer description.</div>
-                        </div>
-                    </div>
-                );
-            })
-        );
-    }
-
     render() {
         const { session } = this.props;
-
         if (!session)
             return <p>Loading...</p>;
         return (
@@ -71,8 +73,8 @@ class SessionMembers extends React.Component {
 const mapStateToProps = (state, ownProps) => {
     return {
         session: state.sessions[ownProps.match.params.id],
-        attendance: Object.values(state.attendance)
+        attendanceDto: Object.values(state.attendanceDto)
     };
 }
 
-export default connect(mapStateToProps, { getSession, getAttendance, purgeAttendance })(SessionMembers);
+export default connect(mapStateToProps, { getSession, getAttendanceDto, purgeAttendanceDto })(SessionMembers);

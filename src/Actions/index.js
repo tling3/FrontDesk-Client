@@ -4,9 +4,9 @@ import {
     GET_SESSIONS,
     GET_SESSION,
     GET_MEMBERS,
-    GET_ATTENDANCE,
-    PURGE_ATTENDANCE,
-    INSERT_ATTENDANCE
+    PURGE_ATTENDANCE_DTO,
+    INSERT_ATTENDANCE,
+    GET_ATTENDANCE_DTO
 } from './Types';
 
 export const getSessions = () => async dispatch => {
@@ -24,20 +24,20 @@ export const getMembers = () => async dispatch => {
     dispatch({ type: GET_MEMBERS, payload: response.data });
 }
 
-export const getAttendance = (sessionId, date) => async dispatch => {
+export const getAttendanceDto = (sessionId, date) => async dispatch => {
     const response = await FrontDesk.get(`/api/attendance/session/${sessionId}/${date}`);
-    dispatch({ type: GET_ATTENDANCE, payload: response.data });
+    dispatch({ type: GET_ATTENDANCE_DTO, payload: response.data });
 };
 
-export const purgeAttendance = () => async dispatch => {
-    dispatch({ type: PURGE_ATTENDANCE });
+export const purgeAttendanceDto = () => async dispatch => {
+    dispatch({ type: PURGE_ATTENDANCE_DTO });
 }
 
-export const insertAttendance = (memberId, sessionId) => async dispatch => {
+export const insertAttendance = (memberId, sessionId, date) => async dispatch => {
     var body = {
         sessionId: sessionId,
         memberId: memberId,
-        sessionDate: "2021-06-06",
+        sessionDate: date,
         modifiedBy: "TL"
     }
     const response = await FrontDesk.post("/api/attendance", body);

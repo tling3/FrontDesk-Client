@@ -1,12 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getMembers, insertAttendance } from '../../../Actions';
 import Modal from '../../../Shared/Modal';
+import { getMembers, insertAttendance } from '../../../Actions';
+import { getTodayDate } from '../../../Shared/Utility';
 
 class MemberSearch extends React.Component {
     state = {
         searchText: "",
-        fullNamesList: [],
         searchResults: []
     };
 
@@ -28,11 +28,16 @@ class MemberSearch extends React.Component {
     }
 
     insertMember(memberId) {
-        this.props.insertAttendance(memberId, this.props.match.params.id);
+        var today = getTodayDate();
+        this.props.insertAttendance(memberId, this.props.match.params.id, today);
     }
 
     mapMembers = () => {
-        if (this.state.searchText !== "" && this.state.searchResults.length > 0) {
+        if (this.state.searchText === "") {
+            return <div>Please search for a member.</div>
+        } else if (this.state.searchText !== "" && this.state.searchResults.length === 0) {
+            return <div>Member not found.</div>
+        } else {
             return this.state.searchResults.map(member => {
                 var name = member[1];
                 var memberId = member[0]
@@ -40,10 +45,9 @@ class MemberSearch extends React.Component {
                     <div className="item" key={memberId}>
                         <i className="large github middle aligned icon"></i>
                         <div className="content">
-                            <a onClick={() => this.insertMember(memberId)}>
+                            <div style={{ cursor: "pointer" }} onClick={() => this.insertMember(memberId)}>
                                 <div className="header">{name}</div>
-                                <div className="description">some text</div>
-                            </a>
+                            </div>
                         </div>
                     </div>
                 );
@@ -64,7 +68,7 @@ class MemberSearch extends React.Component {
 
     renderSearchInput() {
         return (
-            <div>
+            <div style={{ height: "500px" }} >
                 <form className="ui form" onSubmit={this.onSubmit}>
                     <div className="ui grid">
                         <div className="four wide column">
@@ -84,7 +88,11 @@ class MemberSearch extends React.Component {
     }
 
     render() {
-        return this.renderSearchInput();
+        return (
+            <Modal sessionId={this.props.match.params.id}>
+                {this.renderSearchInput()}
+            </Modal>
+        );
     }
 }
 
