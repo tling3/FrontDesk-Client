@@ -1,9 +1,5 @@
 # FrontDesk Application
 
-I wrote this application as a side project to continue to refine my skills with React. The application itself and the technology involved is described below.
-
-## FrontDesk Description
-
 This is a Single Page Application (SPA) built with React and Redux that tracks participants checking-in for an activity. The application allows a user to register themselves for a particular class.
 
 ## FrontDesk Technology
